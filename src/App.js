@@ -1,6 +1,7 @@
 import Card from './components/Card/Card';
 import Drawer from './components/Drawer';
 import Header from './components/Header';
+import React from 'react';
 
 const arr = [{name: 'Мужские Кроссовки Nike Blazer Mid Suede', price: 12999, imageUrl: "/img/sneakers/sneakers1.jpg"},
 {name: 'Мужские Кроссовки Nike Air Max 270', price: 15600, imageUrl: "/img/sneakers/sneakers2.jpg"},
@@ -8,10 +9,12 @@ const arr = [{name: 'Мужские Кроссовки Nike Blazer Mid Suede', p
 {name: 'Кроссовки Puma X Aka Boku Future Rider', price: 8999, imageUrl: "/img/sneakers/sneakers4.jpg"}];
 
 function App() {
+  const [cardOpened, setCardOpened] = React.useState(false);
+
   return (
     <div className="wrapper clear">
-      <Drawer />
-      <Header />
+      {cardOpened ? <Drawer onClose={() => setCardOpened(false)} /> : null}
+      <Header onClickCard={() => setCardOpened(true)}/>
       <div className="content p-40">
         <div className="d-flex align-center justify-between mb-40">
         <h1>Все кроссовки</h1>
