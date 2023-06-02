@@ -3,18 +3,28 @@ import Drawer from './components/Drawer';
 import Header from './components/Header';
 import React from 'react';
 
-const arr = [{name: 'Мужские Кроссовки Nike Blazer Mid Suede', price: 12999, imageUrl: "/img/sneakers/sneakers1.jpg"},
-{name: 'Мужские Кроссовки Nike Air Max 270', price: 15600, imageUrl: "/img/sneakers/sneakers2.jpg"},
-{name: 'Мужские Кроссовки Nike Blazer Mid Suede', price: 8499, imageUrl: "/img/sneakers/sneakers3.jpg"},
-{name: 'Кроссовки Puma X Aka Boku Future Rider', price: 8999, imageUrl: "/img/sneakers/sneakers4.jpg"}];
 
 function App() {
+  const [items, setItems] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
   const [cardOpened, setCardOpened] = React.useState(false);
+  const [currentPrice, setCurrentPrice] = React.useState(0);
+  React.useEffect(() => {
+    fetch('https://6478bf59362560649a2e6456.mockapi.io/items').then(res => {
+    return res.json();
+  }).then(json => {
+    setItems(json);
+  });
+  }, []);
+
+  const onAddToCard = (obj) => {
+    setCartItems(prev => [...prev, obj]);
+  };
 
   return (
     <div className="wrapper clear">
-      {cardOpened ? <Drawer onClose={() => setCardOpened(false)} /> : null}
-      <Header onClickCard={() => setCardOpened(true)}/>
+      {cardOpened && <Drawer items={cartItems} onClose={() => setCardOpened(false)} />}
+      <Header onClickCard={() => setCardOpened(true)} price={currentPrice}/>
       <div className="content p-40">
         <div className="d-flex align-center justify-between mb-40">
         <h1>Все кроссовки</h1>
@@ -23,12 +33,14 @@ function App() {
           <input placeholder="Поиск..." />
         </div>
         </div>
-        <div className="d-flex">
+        <div className="d-flex flex-wrap">
           {
-            arr.map((obj) => (
-              <Card title={obj.name}
-              price={obj.price}
-              url={obj.imageUrl} />
+            items.map((item) => (
+              <Card title={item.name}
+              price={item.price}
+              url={item.imageUrl}
+              onFavorite={() => console.log('add zakladka')}
+              onPlus={(obj) => onAddToCard(obj)} />
             ))}
         </div>
       </div>

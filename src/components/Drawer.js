@@ -1,29 +1,29 @@
 import React from "react";
 
-function Drawer(props){
+function Drawer({onClose, items = []}){
+  let priceDrawer = 0;
+  items.forEach((obj) => {
+    priceDrawer += obj.price;
+  })
     return (
     <div className="overlay">
     <div className="drawer">
     <h2 className="mb-30 justify-between d-flex">Корзина: 
-    <img className="removeBtn cu-p" onClick={props.onClose} src="img/btn-remove.svg" alt="remove" />
+    <img className="removeBtn cu-p" onClick={onClose} src="img/btn-remove.svg" alt="remove" />
     </h2>
     <div className="items">
-    <div className="cartItem d-flex align-center mb-20">
-      <div style={{backgroundImage: 'url(img/sneakers/sneakers1.jpg)'}} className="cartItemImg"></div>
-      <div className="mr-20 flex">
-        <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-        <b>12 999руб.</b>
-      </div>
-      <img className="removeBtn" src="img/btn-remove.svg" alt="remove" />
-    </div>
-    <div className="cartItem d-flex align-center">
-      <div style={{backgroundImage: 'url(img/sneakers/sneakers1.jpg)'}} className="cartItemImg"></div>
-      <div className="mr-20 flex">
-        <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-        <b>12 999руб.</b>
-      </div>
-      <img className="removeBtn" src="img/btn-remove.svg" alt="remove" />
-      </div>
+      {
+        items.map((obj) => (
+          <><div className="cartItem d-flex align-center mb-20">
+            <div style={{ backgroundImage: `url(${obj.url})` }} className="cartItemImg"></div>
+            <div className="mr-20 flex">
+              <p className="mb-5">{obj.title}</p>
+              <b>{obj.price} руб.</b>
+            </div>
+            <img className="removeBtn" src="img/btn-remove.svg" alt="remove" />
+          </div></>
+        ))
+        }
     </div>
 
     <div className="cartTotalBlock">
@@ -31,12 +31,12 @@ function Drawer(props){
       <li>
         <span>Итого:</span>
         <div></div>
-        <b>21 498 руб.</b>
+        <b>{priceDrawer} руб.</b>
       </li>
       <li>
         <span>Налог 5%:</span>
         <div></div>
-        <b>1074 руб.</b>
+        <b>{priceDrawer * 0.05} руб.</b>
       </li>
     </ul>
     <button className="greenButton">Оформить заказ<img src="/img/arrow.svg" alt="arrow" /></button>
